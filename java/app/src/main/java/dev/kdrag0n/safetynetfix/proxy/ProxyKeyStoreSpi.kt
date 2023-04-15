@@ -21,7 +21,10 @@ class ProxyKeyStoreSpi private constructor(
     // Avoid breaking other, legitimate uses of key attestation in Google Play Services, e.g.
     //   - com.google.android.gms.auth.cryptauth.register.ReEnrollmentChimeraService
     //   - tk_trace.129-RegisterForKeyPairOperation
-    private fun isCallerSafetyNet() = Thread.currentThread().stackTrace.any {
+    private fun isCallerDeniedOrSafetyNet(): Boolean {
+        var isGMS = false
+
+        // SafetyNet stack trace example:
         // a.a.engineGetCertificateChain(Unknown Source:15)
         // java.security.KeyStore.getCertificateChain(KeyStore.java:1087)
         // com.google.ccc.abuse.droidguard.DroidGuard.initNative(Native Method)
@@ -33,14 +36,25 @@ class ProxyKeyStoreSpi private constructor(
         // dzx.onTransact(:com.google.android.gms@212621053@21.26.21 (190400-387928701):8)
         // android.os.Binder.execTransactInternal(Binder.java:1179)
         // android.os.Binder.execTransact(Binder.java:1143)
-        logDebug("Stack trace element: $it")
-        it.className.contains("DroidGuard", ignoreCase = true)
+        for (it in Thread.currentThread().stackTrace) {
+            logDebug("Stack trace element: $it")
+
+            if (it.className.contains("DroidGuard", ignoreCase = true)) {
+                return true
+            }
+
+            if (!isGMS && it.className.contains("com.google.android.gms", ignoreCase = true)) {
+                isGMS = true
+            }
+        }
+
+        return !isGMS
     }
 
     override fun engineGetCertificateChain(alias: String?): Array<Certificate>? {
         logDebug("Proxy key store: get certificate chain")
 
-        if (isCallerSafetyNet()) {
+        if (isCallerDeniedOrSafetyNet()) {
             logDebug("Blocking call")
             throw UnsupportedOperationException()
         } else {
