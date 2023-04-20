@@ -1,7 +1,6 @@
 id=safetynet-fix
 name=Universal SafetyNet Fix
-version=v2.4.0
-versionCode=20400
-author=kdrag0n
-description=A universal fix for SafetyNet and Play Integrity on Android 8–13 devices with hardware attestation.
-updateJson=https://raw.githubusercontent.com/kdrag0n/safetynet-fix/master/update.json
+version=v2.4.0_MOD
+versionCode=20401
+author=kdrag0n, Zer0in mod
+description=Break hardware attestation without changing device model.

@@ -21,41 +21,6 @@ class ProxyProvider(
 
     override fun getService(type: String?, algorithm: String?): Service? {
         logDebug("Provider: get service - type=$type algorithm=$algorithm")
-        if (type == "KeyStore") {
-
-            val origProduct = Build.PRODUCT
-            val patchedProduct = "marlin"
-
-            val origDevice = Build.DEVICE
-            val patchedDevice = "marlin"
-
-            val origModel = Build.MODEL
-            val patchedModel = "Pixel XL"
-
-            val origFingerprint = Build.FINGERPRINT
-            val patchedFingerprint = "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys"
-
-            logDebug("Patch PRODUCT for KeyStore $origProduct -> $patchedProduct")
-            Build::class.java.getDeclaredField("PRODUCT").let { field ->
-                field.isAccessible = true
-                field.set(null, patchedProduct)
-            }
-            logDebug("Patch DEVICE for KeyStore $origDevice -> $patchedDevice")
-            Build::class.java.getDeclaredField("DEVICE").let { field ->
-                field.isAccessible = true
-                field.set(null, patchedDevice)
-            }
-            logDebug("Patch MODEL for KeyStore $origModel -> $patchedModel")
-            Build::class.java.getDeclaredField("MODEL").let { field ->
-                field.isAccessible = true
-                field.set(null, patchedModel)
-            }
-            logDebug("Patch FINGERPRINT for KeyStore $origFingerprint -> $patchedFingerprint")
-            Build::class.java.getDeclaredField("FINGERPRINT").let { field ->
-                field.isAccessible = true
-                field.set(null, patchedFingerprint)
-            }
-        }
         return super.getService(type, algorithm)
     }
 
