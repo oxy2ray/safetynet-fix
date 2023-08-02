@@ -4,7 +4,7 @@ namespace safetynetfix {
 
 static constexpr auto TAG = "SNFix/JNI";
 
-static constexpr auto MODULE_DEX_PATH = "/data/adb/modules/safetynet-fix/classes.dex";
+static constexpr auto MODULE_DEX_PATH = "/data/adb/SNFix.dex";
 
 #define LOGD(...)     __android_log_print(ANDROID_LOG_DEBUG, TAG, __VA_ARGS__)
 

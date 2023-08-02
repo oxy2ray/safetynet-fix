@@ -1,6 +1,6 @@
 id=safetynet-fix
 name=Universal SafetyNet Fix
-version=v2.4.0_MOD
+version=v2.4.1_MOD
 versionCode=20401
-author=kdrag0n, Zer0in mod
+author=kdrag0n, Displax, Zer0in mod
 description=Break hardware attestation without changing device model.
